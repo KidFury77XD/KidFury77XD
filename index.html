@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Para ti, Anna</title>
 <meta name="description" content="Una dedicatoria hecha a mano, solo para ti.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,9 +40,10 @@
     font-size:18px;
     line-height:1.7;
     overflow-x:hidden;
+    -webkit-text-size-adjust:100%;
   }
 
-  /* faint stars */
+  /* estrellitas de fondo */
   body::before{
     content:"";
     position:fixed; inset:0;
@@ -56,6 +57,21 @@
   }
 
   .wrap{position:relative; z-index:1; max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  /* margen para que Jorge no tape el texto en pantallas anchas */
+  @media (min-width:641px){ .wrap{ padding-right:40px; } }
+
+  /* ---------- JORGE EL CURIOSO (dibujado con código, se mueve al hacer scroll) ---------- */
+  #george{
+    position:fixed; top:0; right:14px; width:112px;
+    z-index:6; pointer-events:none;
+    transform-origin:52% 8%;         /* pivota desde la manita de arriba, como colgado */
+    will-change:transform;
+    filter:drop-shadow(0 10px 14px #0a041a80);
+  }
+  #george .arm-l{transform-origin:38px 74px; animation:swingArm 3.4s ease-in-out infinite}
+  #george .tail{transform-origin:78px 108px; animation:swingTail 3.4s ease-in-out infinite}
+  @keyframes swingArm{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(6deg)}}
+  @keyframes swingTail{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
 
   /* ---------- HERO ---------- */
   .hero{
@@ -102,7 +118,7 @@
   .scroll-cue span{display:block; font-size:1.3rem; margin-top:2px}
   @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
-  /* ---------- SECTIONS ---------- */
+  /* ---------- SECCIONES ---------- */
   section.block{padding:64px 0}
   .reveal{opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s ease}
   .reveal.in{opacity:1; transform:none}
@@ -137,7 +153,7 @@
     font-size:1.4rem; color:var(--lilac); margin:0 0 26px;
   }
 
-  /* reasons */
+  /* motivos */
   .reasons{display:flex; flex-direction:column; gap:16px}
   .reason{
     display:flex; gap:16px; align-items:flex-start;
@@ -155,7 +171,7 @@
   .reason h3{font-family:"Nunito"; font-weight:700; margin:.1em 0 .2em; font-size:1.08rem; color:#fff}
   .reason p{margin:0; color:var(--text-dim); font-size:1rem; line-height:1.55}
 
-  /* photos */
+  /* fotos */
   .gallery{display:grid; grid-template-columns:1fr 1fr; gap:20px 16px; margin-top:6px}
   .polaroid{
     background:#F6F0FF; border-radius:8px; padding:10px 10px 0;
@@ -178,7 +194,7 @@
     font-size:1.3rem; padding:8px 4px 12px; line-height:1;
   }
 
-  /* dedication */
+  /* dedicatoria */
   .dedi{
     background:linear-gradient(180deg,#2E1D4C,#241537);
     border:1px solid var(--plum-line); border-radius:22px;
@@ -188,7 +204,7 @@
   .dedi p:last-child{margin-bottom:0}
   .dedi .em{color:var(--lilac-soft); font-style:italic}
 
-  /* closing */
+  /* cierre */
   .closing{text-align:center; padding:70px 0 30px}
   .closing .big{
     font-family:"Fraunces",serif; font-weight:600;
@@ -215,10 +231,21 @@
   .burst{position:fixed; z-index:50; pointer-events:none; font-size:24px; will-change:transform,opacity}
   @keyframes fadeUp{from{opacity:0; transform:translateY(28px)}to{opacity:1; transform:none}}
 
-  @media (max-width:420px){
+  /* ---------- AJUSTES PARA CELULAR ---------- */
+  @media (max-width:520px){
     body{font-size:17px}
+    .wrap{padding:0 18px}
+    section.block{padding:52px 0}
     .gallery{gap:16px 12px}
+    #george{width:66px; right:4px}   /* Jorge más pequeñito en el móvil */
+    .note.hand{font-size:1.4rem}
+    .dedi{padding:28px 20px}
+    .dedi p{font-size:1.08rem; line-height:1.8}
   }
+  @media (max-width:360px){
+    .gallery{grid-template-columns:1fr}  /* fotos en una sola columna en pantallas muy chicas */
+  }
+
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
     .reveal{opacity:1; transform:none}
@@ -227,12 +254,49 @@
 </head>
 <body>
 
-  <!-- ======= HERO ======= -->
+  <!-- ======================================================================
+       JORGE EL CURIOSO — dibujado 100% con código (SVG). Se balancea solo y
+       baja por el borde derecho mientras haces scroll (ver script abajo).
+       ====================================================================== -->
+  <svg id="george" viewBox="0 0 120 168" aria-hidden="true">
+    <!-- liana de la que va colgado -->
+    <path d="M60 -40 Q 70 10 60 40" fill="none" stroke="#7ED9A0" stroke-width="5" stroke-linecap="round"/>
+    <!-- cola -->
+    <path class="tail" d="M78 108 q 30 4 26 -26 q -3 -18 -20 -12" fill="none" stroke="#6E4326" stroke-width="9" stroke-linecap="round"/>
+    <!-- brazo derecho que sujeta la liana -->
+    <path d="M70 78 C 74 60 66 48 60 40" fill="none" stroke="#7A4A24" stroke-width="12" stroke-linecap="round"/>
+    <!-- piernas -->
+    <path d="M50 120 q -6 18 -14 22" fill="none" stroke="#7A4A24" stroke-width="12" stroke-linecap="round"/>
+    <path d="M66 120 q 8 16 18 16" fill="none" stroke="#7A4A24" stroke-width="12" stroke-linecap="round"/>
+    <!-- cuerpo -->
+    <ellipse cx="58" cy="100" rx="24" ry="27" fill="#7A4A24"/>
+    <ellipse cx="58" cy="103" rx="15" ry="18" fill="#F0D3AC"/>
+    <!-- brazo izquierdo (se mece) -->
+    <path class="arm-l" d="M38 90 q -14 6 -14 24" fill="none" stroke="#7A4A24" stroke-width="12" stroke-linecap="round"/>
+    <!-- orejas -->
+    <circle cx="34" cy="52" r="12" fill="#7A4A24"/><circle cx="34" cy="52" r="6.5" fill="#F0D3AC"/>
+    <circle cx="82" cy="52" r="12" fill="#7A4A24"/><circle cx="82" cy="52" r="6.5" fill="#F0D3AC"/>
+    <!-- cabeza -->
+    <circle cx="58" cy="55" r="28" fill="#7A4A24"/>
+    <!-- carita -->
+    <ellipse cx="58" cy="60" rx="21" ry="18" fill="#F0D3AC"/>
+    <!-- ojos curiosos -->
+    <circle cx="50" cy="54" r="6" fill="#fff"/><circle cx="51" cy="55" r="3.2" fill="#241A12"/>
+    <circle cx="66" cy="54" r="6" fill="#fff"/><circle cx="67" cy="55" r="3.2" fill="#241A12"/>
+    <!-- naricita y sonrisa -->
+    <ellipse cx="58" cy="64" rx="3" ry="2.2" fill="#6E4326"/>
+    <path d="M50 69 q 8 7 16 0" fill="none" stroke="#6E4326" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>
+
+  <!-- ======= HERO / PORTADA ======= -->
   <header class="hero">
     <div id="floaties" aria-hidden="true"></div>
     <div class="hero-inner">
+      <!-- ✏️ EDITAR — frase pequeña de arriba -->
       <p class="eyebrow">hecho a mano, solo para ti</p>
+      <!-- ✏️ EDITAR — NOMBRE de ella (portada) -->
       <h1>Anna</h1>
+      <!-- ✏️ EDITAR — subtítulo de la portada -->
       <p class="sub">…tienes que ver esto 💜</p>
     </div>
     <div class="scroll-cue" aria-hidden="true">desliza hacia abajo<span>↓</span></div>
@@ -240,21 +304,26 @@
 
   <main class="wrap">
 
-    <!-- intro handwritten -->
+    <!-- ======= NOTA "A MANO" ======= -->
     <section class="block">
       <div class="note hand reveal">
         <span class="tape" aria-hidden="true"></span>
+        <!-- ✏️ EDITAR — nota escrita a mano -->
         No compré esto en ningún lado. Lo hice yo, con mis propias manos, pensando en ti
         en cada detalle — porque tú eres de las que aprecian lo que se hace con el corazón.
         Así que ponte cómoda, corazón. Esto es para ti. 🐵
       </div>
     </section>
 
-    <!-- reasons -->
+    <!-- ======= MOTIVOS ======= -->
     <section class="block">
+      <!-- ✏️ EDITAR — título de la sección de motivos -->
       <h2 class="title reveal">Pequeñas cosas de ti</h2>
+      <!-- ✏️ EDITAR — subtítulo de la sección de motivos -->
       <p class="kicker reveal">las que me alegran el día sin que lo sepas</p>
       <div class="reasons">
+
+        <!-- ✏️ EDITAR — motivo 1 (emoji, título y texto) -->
         <div class="reason reveal">
           <div class="ic" aria-hidden="true">😊</div>
           <div>
@@ -262,6 +331,8 @@
             <p>Podría tener el peor día del mundo y, si te escucho reír, se me arregla enterito.</p>
           </div>
         </div>
+
+        <!-- ✏️ EDITAR — motivo 2 -->
         <div class="reason reveal">
           <div class="ic" aria-hidden="true">🍬</div>
           <div>
@@ -269,6 +340,8 @@
             <p>Una gomita, tu monito favorito, una tontería mía… te iluminas, y eso me encanta de ti.</p>
           </div>
         </div>
+
+        <!-- ✏️ EDITAR — motivo 3 -->
         <div class="reason reveal">
           <div class="ic" aria-hidden="true">🐵</div>
           <div>
@@ -276,6 +349,8 @@
             <p>Sin filtros, sin poses. Así, tal como eres, es como me robas una sonrisa.</p>
           </div>
         </div>
+
+        <!-- ✏️ EDITAR — motivo 4 -->
         <div class="reason reveal">
           <div class="ic" aria-hidden="true">🔎</div>
           <div>
@@ -283,14 +358,19 @@
             <p>Como Jorge el curioso, quieres descubrirlo todo — y yo quiero descubrirte a ti, poquito a poco.</p>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- photos -->
+    <!-- ======= FOTOS ======= -->
     <section class="block">
+      <!-- ✏️ EDITAR — título de la sección de fotos -->
       <h2 class="title reveal">Tú, en fotitos</h2>
+      <!-- ✏️ EDITAR — subtítulo de la sección de fotos -->
       <p class="kicker reveal">mis momentos favoritos tienen tu cara</p>
       <div class="gallery reveal">
+
+        <!-- Foto 1 — pon el archivo en fotos/foto1.jpg. ✏️ EDITAR el pie: "preciosa" -->
         <div class="polaroid">
           <div class="frame">
             <img src="fotos/foto1.jpg" alt="Anna" onerror="this.style.display='none'">
@@ -298,6 +378,8 @@
           </div>
           <div class="cap">preciosa</div>
         </div>
+
+        <!-- Foto 2 — fotos/foto2.jpg. ✏️ EDITAR el pie -->
         <div class="polaroid">
           <div class="frame">
             <img src="fotos/foto2.jpg" alt="Anna" onerror="this.style.display='none'">
@@ -305,6 +387,8 @@
           </div>
           <div class="cap">mi persona favorita</div>
         </div>
+
+        <!-- Foto 3 — fotos/foto3.jpg. ✏️ EDITAR el pie -->
         <div class="polaroid">
           <div class="frame">
             <img src="fotos/foto3.jpg" alt="Anna" onerror="this.style.display='none'">
@@ -312,6 +396,8 @@
           </div>
           <div class="cap">dulce como gomita</div>
         </div>
+
+        <!-- Foto 4 — fotos/foto4.jpg. ✏️ EDITAR el pie -->
         <div class="polaroid">
           <div class="frame">
             <img src="fotos/foto4.jpg" alt="Anna" onerror="this.style.display='none'">
@@ -319,29 +405,40 @@
           </div>
           <div class="cap">tú y ya</div>
         </div>
+
       </div>
     </section>
 
-    <!-- dedication -->
+    <!-- ======= DEDICATORIA (el mensaje principal) ======= -->
     <section class="block">
+      <!-- ✏️ EDITAR — título de la dedicatoria -->
       <h2 class="title reveal">Lo que quería decirte</h2>
+      <!-- ✏️ EDITAR — subtítulo de la dedicatoria -->
       <p class="kicker reveal">léelo despacito</p>
       <div class="dedi reveal">
+        <!-- ✏️ EDITAR — dedicatoria, párrafo 1 -->
         <p>Annabell, hay personas que llegan sin hacer ruido y, aun así, lo cambian todo. Tú eres esa persona para mí.</p>
+        <!-- ✏️ EDITAR — dedicatoria, párrafo 2 -->
         <p>No sabría decirte exactamente cuándo pasó. Solo sé que un día tu risa se volvió mi parte favorita del día, que empecé a guardar las cosas pequeñas solo para contártelas, y que sin darme cuenta ya pensaba en ti más de lo que debería admitir.</p>
+        <!-- ✏️ EDITAR — dedicatoria, párrafo 3 (aquí está el "te quiero") -->
         <p>No busco palabras enormes ni promesas de película. Solo quiero que sepas algo sencillo y verdadero: <span class="em">te quiero</span>. Te quiero de esa forma tranquila y sincera que no necesita gritar para sentirse.</p>
+        <!-- ✏️ EDITAR — dedicatoria, párrafo 4 -->
         <p>Y si un día te sientes triste, vuelve aquí. Que esta pequeña web hecha a mano te recuerde que, en algún lugar, hay alguien a quien le alegras la existencia con solo ser tú.</p>
       </div>
     </section>
 
-    <!-- closing -->
+    <!-- ======= CIERRE ======= -->
     <section class="closing">
+      <!-- ✏️ EDITAR — frase grande final -->
       <p class="big reveal">Te quiero, corazón 💜</p>
+      <!-- ✏️ EDITAR — firma -->
       <p class="sign reveal">— tu corazón</p>
+      <!-- ✏️ EDITAR — texto del botón -->
       <button class="heartbtn" id="heartbtn" type="button">tócame 🐵💜</button>
     </section>
 
     <footer>
+      <!-- ✏️ EDITAR — pie de página -->
       <p class="h">hecho a mano, con cariño, para Anna 🍬</p>
     </footer>
   </main>
@@ -350,7 +447,7 @@
 (function(){
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* floating gummies + monkeys in hero */
+  /* gomitas y monitos flotando en la portada */
   if(!reduce){
     var f = document.getElementById("floaties");
     var emojis = ["🐵","🍬","💜","🍭","🐒","💜","🍬","🐵","✨","🍬","💜","🐵","🍭","🐵"];
@@ -367,7 +464,25 @@
     }
   }
 
-  /* scroll reveals */
+  /* ---- JORGE se mueve con el scroll: baja por el borde y se balancea ---- */
+  var george = document.getElementById("george");
+  var ticking = false;
+  function placeGeorge(){
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var p = max > 0 ? doc.scrollTop / max : 0;              /* 0 arriba … 1 abajo */
+    var travel = Math.max(0, window.innerHeight - george.getBoundingClientRect().height - 30);
+    var y = 16 + p * travel;                                 /* baja mientras scrolleas */
+    var swing = reduce ? 0 : Math.sin(doc.scrollTop / 90) * 9; /* se columpia */
+    george.style.transform = "translateY(" + y + "px) rotate(" + swing + "deg)";
+    ticking = false;
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(placeGeorge); } }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", placeGeorge);
+  placeGeorge();
+
+  /* animaciones que aparecen al hacer scroll */
   var reveals = document.querySelectorAll(".reveal");
   if("IntersectionObserver" in window && !reduce){
     var io = new IntersectionObserver(function(entries){
@@ -380,7 +495,7 @@
     reveals.forEach(function(el){ el.classList.add("in"); });
   }
 
-  /* heart burst */
+  /* lluvia de corazones al tocar el botón */
   var btn = document.getElementById("heartbtn");
   var pieces = ["💜","🐵","🍬","💜","🍭","✨"];
   btn.addEventListener("click", function(){
