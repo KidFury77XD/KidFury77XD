@@ -1,10 +1,17 @@
-Pon aquí las fotos de Anna con estos nombres exactos:
+FOTOS DE ANNA
+=============
 
-  foto1.jpg
-  foto2.jpg
-  foto3.jpg
-  foto4.jpg
+Pon aquí las fotos de ella (selfies que te mande o capturas de la
+videollamada) con estos nombres exactos:
 
-Formato: .jpg (o cambia la extensión en index.html si son .png).
-Cuadradas quedan mejor (se recortan al centro automáticamente).
-Si falta alguna, la web muestra un marco morado bonito en su lugar.
+  foto1.jpg   ->  "preciosa"
+  foto2.jpg   ->  "mi persona favorita"
+  foto3.jpg   ->  "tan dulce"
+  foto4.jpg   ->  "solo tú"
+
+- Si no pones alguna, en su lugar aparece un dibujito bonito (no se rompe).
+- Pueden ser .jpg o .png (si usas .png, cambia el nombre en index.html).
+- Salen mejor si son más o menos cuadradas.
+
+Los textos de cada foto y de toda la web se editan en index.html:
+busca las marcas  ✏️ EDITAR
