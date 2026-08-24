@@ -1,0 +1,10 @@
+Pon aquí las fotos de Anna con estos nombres exactos:
+
+  foto1.jpg
+  foto2.jpg
+  foto3.jpg
+  foto4.jpg
+
+Formato: .jpg (o cambia la extensión en index.html si son .png).
+Cuadradas quedan mejor (se recortan al centro automáticamente).
+Si falta alguna, la web muestra un marco morado bonito en su lugar.
